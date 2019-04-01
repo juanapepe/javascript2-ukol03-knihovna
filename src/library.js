@@ -41,6 +41,9 @@ export default class Library {
     console.table(this.bookList);
     console.log(this.currentBook);
     console.log(this.nextBook);
+
+    // current book in HTML
+    this.currentBook.renderHTML();
   }
 
   /* začít číst další knihu */
@@ -58,6 +61,46 @@ export default class Library {
         }
       }
     }
+  }
+
+  // dočtení aktuálně čtené knihy
+  finishCurrentBook() {
+
+    if (this.currentBook !== null) {
+      
+      // u aktuálně čtené knihy zavolá metodu read()
+      this.currentBook.read();
+      // let kniha = new Book('Wilbur Smith', 'Řeka bohů', 1980);
+      // let kniha = this.currentBook;
+      // kniha.read(); 
+
+      // přesune aktuální knihu z vlastnosti currentBook do vlastnosti lastBook
+      this.lastBook = this.currentBook;
+
+      // do currentBook dáme hodnotu null - dočetli jsme, takže teď nic nečteme
+      this.currentBook = null;
+
+      // aktualizuje počet nepřečtených knih, aby odpovídal aktuálnímu stavu
+      // console.log(`Počet nepřečtených knih před odečtením unreadBooks je: ${this.unreadBooks}`);
+      this.unreadBooks--;
+      console.log(`Počet nepřečtených knih po odečtení unreadBooks je: ${this.unreadBooks}`);
+    }
+  }
+
+  // výpis všech nepřečtených knih
+  listUnreadBooks() {
+
+    // vyfiltruje ze seznamu všech knih (vlastnost booklist) jenom ty knihy, které jsou nepřečtené
+    // výsledek se uloží do lokální proměnné jako nové pole
+    
+    // console.log(`Původní seznam všech knih:`);
+    // console.table (this.bookList);
+
+    let unreadList = this.bookList.filter(item => item.isRead === false);
+
+    // toto nové pole (seznam nepřečtených knih) vypíše do konzole (nebo do HTML, viz. bonus)
+    console.log(`Vyfiltrovaný seznam s pouze nepřečtenými knihami:`);
+    console.table(unreadList);    
   }
 
 }
